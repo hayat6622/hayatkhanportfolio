@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hayatullah Khan · WP, Elementor & FlutterFlow Expert</title>
+  <!-- Font Awesome 6 & Google Fonts (Inter) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <!-- AOS library -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <style>
+    /* same excellent styles as before — keep modern glassmorphism */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0b0b0f;
+      color: #ededef;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* noise overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wNCIgLz48L3N2Zz4=');
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.3;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    /* glass navigation */
+    .navbar {
+      position: sticky;
+      top: 1rem;
+      z-index: 100;
+      max-width: 1200px;
+      margin: 0 auto 1rem;
+      background: rgba(20, 20, 30, 0.7);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-radius: 60px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.8rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(130deg, #ffffff, #b0aeff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.8rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      color: #c0c0d0;
+      font-size: 1rem;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ff7b89, #ffb347);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .nav-links a:hover::after {
+      width: 80%;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.5rem;
+      background: linear-gradient(145deg, #24243a, #1a1a2e);
+      color: white;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: 0.3s;
+      box-shadow: 0 10px 20px -5px rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff7b89, #ffb347);
+      border: none;
+      box-shadow: 0 15px 25px -5px #ff7b8940;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 25px 35px -5px #ff7b8980;
+    }
+
+    .btn-outline-modern {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.2);
+    }
+
+    .btn-outline-modern:hover {
+      border-color: #ff7b89;
+      background: rgba(255, 123, 137, 0.1);
+      transform: translateY(-4px);
+    }
+
+    section {
+      padding: 6rem 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: clamp(2.2rem, 8vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      text-align: center;
+      background: linear-gradient(145deg, #ffffff, #ffb6c1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 4rem auto;
+      color: #9c9cb0;
+      font-size: 1.2rem;
+    }
+
+    /* hero */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .hero-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 3rem;
+      width: 100%;
+    }
+
+    .hero-content {
+      flex: 1 1 500px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 123, 137, 0.16);
+      border: 1px solid rgba(255, 123, 137, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 0.5rem 1.5rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #ffb6c1;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 20px #ff7b8920;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(2.5rem, 10vw, 5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(to right, #ffffff, #ffe0e0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-gradient-text {
+      background: linear-gradient(145deg, #ff7b89, #ffb347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      border-right: 3px solid #ff7b89;
+      padding-right: 10px;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { border-color: #ff7b89; }
+      50% { border-color: transparent; }
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      color: #aaaac0;
+      margin: 2rem 0 2.5rem;
+      max-width: 550px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-visual {
+      flex: 1 1 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .floating-shape {
+      width: 320px;
+      height: 320px;
+      background: linear-gradient(145deg, #ff7b8930, #ffb34730);
+      border-radius: 50%;
+      filter: blur(60px);
+      position: absolute;
+      z-index: -1;
+      animation: pulseBlob 6s infinite alternate;
+    }
+
+    .floating-shape.two {
+      width: 200px;
+      height: 200px;
+      background: #ffb34740;
+      filter: blur(70px);
+      top: 20%;
+      right: 0;
+    }
+
+    @keyframes pulseBlob {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+      100% { transform: scale(1.3) translate(20px, -20px); opacity: 1; }
+    }
+
+    .hero-visual i {
+      font-size: 14rem;
+      color: transparent;
+      background: linear-gradient(145deg, #ff9a9e, #ffb347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: drop-shadow(0 0 40px #ff7b89);
+      animation: float 6s infinite alternate ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(-2deg); }
+      100% { transform: translateY(-30px) rotate(2deg); }
+    }
+
+    /* stats */
+    .stats-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(145deg, #ff7b89, #ffb347);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-label {
+      color: #aaaac0;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+    }
+
+    /* about cards */
+    .about-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .about-card {
+      background: rgba(30, 30, 45, 0.4);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 40px;
+      padding: 2.5rem 2rem;
+      flex: 1 1 250px;
+      box-shadow: 0 20px 40px -10px #00000080;
+      transition: 0.3s;
+      text-align: center;
+    }
+    .about-card:hover {
+      transform: translateY(-10px);
+      border-color: #ff7b8940;
+      box-shadow: 0 30px 60px -10px #ff7b8960;
+    }
+    .about-card i {
+      font-size: 2.8rem;
+      background: linear-gradient(145deg, #ff7b89, #ffb347);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .about-card h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 1rem 0 0.5rem;
+    }
+    .about-card p {
+      color: #a5a5c0;
+    }
+
+    /* timeline */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .timeline-item {
+      background: rgba(20, 20, 30, 0.5);
+      backdrop-filter: blur(12px);
+      border: 1px solid #2a2a3a;
+      border-radius: 30px;
+      padding: 2rem 2.5rem;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      transition: 0.3s;
+    }
+    .timeline-item:hover {
+      border-color: #ff7b89;
+      transform: scale(1.01) translateY(-3px);
+    }
+    .timeline-icon {
+      font-size: 2.5rem;
+      color: #ff7b89;
+    }
+    .timeline-content h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    .timeline-content h4 {
+      color: #ffb347;
+      font-weight: 600;
+      margin: 0.2rem 0 1rem;
+    }
+    .timeline-content p {
+      color: #b5b5d0;
+    }
+
+    /* skills */
+    .skills-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(20,20,30,0.3);
+      backdrop-filter: blur(8px);
+      border-radius: 60px;
+      padding: 3rem;
+      border: 1px solid #2a2a3a;
+    }
+    .skill-item {
+      margin: 2rem 0;
+    }
+    .skill-info {
+      display: flex;
+      justify-content: space-between;
+      color: #cccce0;
+      font-weight: 500;
+      margin-bottom: 0.6rem;
+    }
+    .skill-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: #202032;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px #00000080;
+    }
+    .skill-bar-fill {
+      height: 10px;
+      background: linear-gradient(90deg, #ff7b89, #ffb347);
+      border-radius: 20px;
+      width: 0;
+      animation: fillBar 1.5s ease-out forwards;
+      box-shadow: 0 0 15px #ff7b89;
+    }
+    @keyframes fillBar {
+      0% { width: 0; }
+      100% { width: var(--fill); }
+    }
+
+    /* project grid */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .project-card {
+      background: rgba(25, 25, 35, 0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 40px;
+      border: 1px solid #2e2e42;
+      overflow: hidden;
+      transition: 0.4s;
+    }
+    .project-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      border-color: #ff7b89;
+      box-shadow: 0 30px 50px -20px #ff7b89;
+    }
+    .project-img {
+      height: 200px;
+      background: radial-gradient(circle at top left, #443b5e, #1d1d2f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: #ff7b8980;
+      transition: 0.3s;
+    }
+    .project-card:hover .project-img {
+      color: #fff;
+      background: radial-gradient(circle at top left, #6b4b7a, #2a2a3a);
+    }
+    .project-info {
+      padding: 2rem;
+    }
+    .project-info h3 {
+      font-size: 1.8rem;
+    }
+    .project-info .role {
+      color: #ffb347;
+      font-weight: 600;
+      margin: 0.3rem 0 0.8rem;
+    }
+    .project-info p {
+      color: #b5b5d0;
+    }
+
+    /* contact */
+    .contact-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      background: rgba(20, 20, 30, 0.4);
+      backdrop-filter: blur(16px);
+      border-radius: 70px;
+      padding: 3.5rem;
+      border: 1px solid #2c2c44;
+    }
+    .contact-info {
+      flex: 1 1 250px;
+    }
+    .contact-info h3 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(145deg, #fff, #ffb6c1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .contact-info p {
+      color: #b4b4d0;
+      margin: 2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      word-break: break-word;
+    }
+    .contact-info i {
+      font-size: 1.8rem;
+      color: #ff7b89;
+      min-width: 40px;
+    }
+    .contact-info a {
+      color: #ffb347;
+      text-decoration: none;
+    }
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+    .contact-social a {
+      color: #cacae0;
+      font-size: 2rem;
+      margin-right: 2rem;
+      transition: 0.2s;
+    }
+    .contact-social a:hover {
+      color: #ff7b89;
+      transform: translateY(-5px);
+    }
+    .contact-form {
+      flex: 2 1 400px;
+    }
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 1.2rem 2rem;
+      background: rgba(10, 10, 18, 0.7);
+      border: 1px solid #33334a;
+      border-radius: 60px;
+      font-size: 1rem;
+      color: white;
+      transition: 0.2s;
+    }
+    textarea {
+      border-radius: 30px;
+    }
+    input:focus, textarea:focus {
+      border-color: #ff7b89;
+      outline: none;
+      box-shadow: 0 0 0 5px #ff7b8920;
+    }
+    .submit-btn {
+      background: linear-gradient(135deg, #ff7b89, #ffb347);
+      border: none;
+      padding: 1.2rem 3rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: white;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 15px 30px -5px #ff7b89b0;
+    }
+    .submit-btn:hover {
+      transform: scale(1.02) translateY(-4px);
+      box-shadow: 0 25px 40px -5px #ff7b89;
+    }
+    .footer {
+      text-align: center;
+      padding: 2.5rem;
+      background: #07070b;
+      color: #6f6f90;
+      border-top: 1px solid #1f1f30;
+    }
+
+    @media (max-width: 700px) {
+      .navbar {
+        flex-direction: column;
+        gap: 0.8rem;
+        border-radius: 30px;
+        padding: 1rem;
+      }
+      .nav-links { gap: 1.5rem; }
+      .hero-visual i { font-size: 10rem; }
+      .timeline-item {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" data-aos="fade-down">
+    <div class="logo">HAYATULLAH KHAN</div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#web-projects">Web</a>
+      <a href="#apps">Apps</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="home">
+    <div class="hero-container">
+      <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
+        <span class="hero-badge"><i class="fa-brands fa-wordpress"></i> <i class="fa-solid fa-fire"></i> 120+ Projects Delivered</span>
+        <h1>Hayatullah Khan <br><span class="hero-gradient-text">Director & Lead Developer</span></h1>
+        <p>WordPress & Elementor expert (5+ years) · FlutterFlow & Flutter app developer · Former Graphics Designer at Troika Soft Inc. · Co‑founder SimplyCrypt · Senior WP Dev HeliumLabs · Director Al‑Bidaar Technologies</p>
+        <div class="hero-buttons">
+          <a href="#web-projects" class="btn btn-primary"><i class="fa-regular fa-eye"></i> View work</a>
+          <a href="#contact" class="btn btn-outline-modern"><i class="fa-regular fa-paper-plane"></i> Contact</a>
+        </div>
+      </div>
+      <div class="hero-visual" data-aos="fade-left" data-aos-delay="200">
+        <div class="floating-shape"></div>
+        <div class="floating-shape two"></div>
+        <i class="fa-solid fa-laptop-code"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats: 120+ projects -->
+  <div style="text-align: center; margin-top: -3rem;" data-aos="fade-up">
+    <div class="stats-grid">
+      <div class="stat-item"><span class="stat-number">120+</span><div class="stat-label">Projects</div></div>
+      <div class="stat-item"><span class="stat-number">5+</span><div class="stat-label">Years WP</div></div>
+      <div class="stat-item"><span class="stat-number">8+</span><div class="stat-label">Mobile Apps</div></div>
+    </div>
+  </div>
+
+  <section id="about">
+    <h2 class="section-title" data-aos="fade-up">Who I am</h2>
+    <div class="section-sub" data-aos="fade-up">multidisciplinary leader, developer & designer</div>
+    <div class="about-grid">
+      <div class="about-card" data-aos="flip-up" data-aos-delay="0">
+        <i class="fa-solid fa-briefcase"></i>
+        <h3>Director</h3>
+        <p>Al‑Bidaar Technologies Pvt. Ltd. · leading digital innovation</p>
+      </div>
+      <div class="about-card" data-aos="flip-up" data-aos-delay="100">
+        <i class="fa-solid fa-code"></i>
+        <h3>120+ Projects</h3>
+        <p>WordPress, Elementor Pro, custom themes, WooCommerce · 5+ years</p>
+      </div>
+      <div class="about-card" data-aos="flip-up" data-aos-delay="200">
+        <i class="fa-brands fa-android"></i>
+        <h3>Flutter & FlutterFlow</h3>
+        <p>Cross‑platform mobile apps for iOS & Android · 8+ apps shipped</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" style="background: #0a0a0e;">
+    <h2 class="section-title" data-aos="fade-up">Career journey</h2>
+    <div class="section-sub" data-aos="fade-up">roles that shaped my expertise</div>
+    <div class="timeline">
+      <div class="timeline-item" data-aos="fade-right">
+        <div class="timeline-icon"><i class="fa-solid fa-paintbrush"></i></div>
+        <div class="timeline-content">
+          <h3>Graphics Designer</h3>
+          <h4>Troika Soft Inc. · 2021 – 2024</h4>
+          <p>Designed branding, UI assets, and marketing materials for software products.</p>
+        </div>
+      </div>
+      <div class="timeline-item" data-aos="fade-right" data-aos-delay="50">
+        <div class="timeline-icon"><i class="fa-solid fa-crown"></i></div>
+        <div class="timeline-content">
+          <h3>Director</h3>
+          <h4>Al‑Bidaar Technologies Pvt. Ltd. · current</h4>
+          <p>Leading web & mobile development team, overseeing client projects and product strategy.</p>
+        </div>
+      </div>
+      <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+        <div class="timeline-icon"><i class="fa-solid fa-handshake"></i></div>
+        <div class="timeline-content">
+          <h3>Co‑founder & WordPress Developer</h3>
+          <h4>SimplyCrypt · 2022 – present</h4>
+          <p>Built and maintain company website, integrated Elementor, and developed internal tools.</p>
+        </div>
+      </div>
+      <div class="timeline-item" data-aos="fade-right" data-aos-delay="150">
+        <div class="timeline-icon"><i class="fa-brands fa-wordpress"></i></div>
+        <div class="timeline-content">
+          <h3>Senior WordPress Developer</h3>
+          <h4>HeliumLabs · 2023 – present</h4>
+          <p>Developing high‑performance WordPress sites for clients like Zaiin Consultancy, Digital Linkage, and SimplyCrypt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2 class="section-title" data-aos="fade-up">Technical toolkit</h2>
+    <div class="section-sub" data-aos="fade-up">expertise across platforms</div>
+    <div class="skills-container" data-aos="zoom-in">
+      <div class="skill-item">
+        <div class="skill-info"><span>WordPress</span> <span>95%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" style="--fill:95%; width:95%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-info"><span>Elementor Pro</span> <span>98%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" style="--fill:98%; width:98%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-info"><span>Flutter / FlutterFlow</span> <span>88%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" style="--fill:88%; width:88%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-info"><span>PHP / MySQL</span> <span>85%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" style="--fill:85%; width:85%"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-info"><span>Graphics Design (Adobe Suite)</span> <span>80%</span></div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" style="--fill:80%; width:80%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="web-projects" style="background: #0a0a0e;">
+    <h2 class="section-title" data-aos="fade-up">Web projects (highlights)</h2>
+    <div class="section-sub" data-aos="fade-up">selected from 120+ WordPress & Elementor deliveries</div>
+    <div class="project-grid">
+      <div class="project-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="project-img"><i class="fa-brands fa-wordpress"></i></div>
+        <div class="project-info">
+          <h3>Zain Consultancy</h3>
+          <div class="role">WordPress + Elementor</div>
+          <p>Corporate site with advanced animations, contact forms, and SEO optimization.</p>
+        </div>
+      </div>
+      <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="project-img"><i class="fa-solid fa-link"></i></div>
+        <div class="project-info">
+          <h3>Digital Linkage (HeliumLabs)</h3>
+          <div class="role">Elementor Pro · Custom Post Types</div>
+          <p>Dynamic service showcase, integrated blog, and performance optimizations.</p>
+        </div>
+      </div>
+      <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="project-img"><i class="fa-solid fa-shield"></i></div>
+        <div class="project-info">
+          <h3>SimplyCrypt</h3>
+          <div class="role">Co‑founder & Developer</div>
+          <p>Landing page, membership integration, and custom Elementor widgets.</p>
+        </div>
+      </div>
+      <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="project-img"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="project-info">
+          <h3>HedgeExpert (Landing)</h3>
+          <div class="role">Elementor + WooCommerce</div>
+          <p>Promotional site for trading bot app with pre‑order functionality.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apps">
+    <h2 class="section-title" data-aos="fade-up">Flutter & FlutterFlow apps</h2>
+    <div class="section-sub" data-aos="fade-up">mobile applications for iOS & Android</div>
+    <div class="project-grid">
+      <div class="project-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="project-img"><i class="fa-solid fa-headphones"></i></div>
+        <div class="project-info">
+          <h3>BeatJearky</h3>
+          <div class="role">Flutter music player</div>
+          <p>Feature‑rich audio player with playlists, equalizer, and offline mode.</p>
+        </div>
+      </div>
+      <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="project-img"><i class="fa-solid fa-music"></i></div>
+        <div class="project-info">
+          <h3>Melody Show</h3>
+          <div class="role">Flutter music player</div>
+          <p>Sleek UI for streaming and local tracks, with lyrics display and background play.</p>
+        </div>
+      </div>
+      <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="project-img"><i class="fa-solid fa-coins"></i></div>
+        <div class="project-info">
+          <h3>Digi‑Babu</h3>
+          <div class="role">Money management software</div>
+          <p>Track company & home expenses, generate reports, multi‑currency support.</p>
+        </div>
+      </div>
+      <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="project-img"><i class="fa-solid fa-chart-simple"></i></div>
+        <div class="project-info">
+          <h3>HedgeExpert Bot</h3>
+          <div class="role">Trading bot app</div>
+          <p>Real‑time crypto/forex signals, portfolio tracking, and automated trading.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title" data-aos="fade-up">Let's connect</h2>
+    <div class="section-sub" data-aos="fade-up">reach out for collaborations or opportunities</div>
+    <div class="contact-container" data-aos="zoom-in-up">
+      <div class="contact-info">
+        <h3>Hayatullah Khan</h3>
+        <p><i class="fa-regular fa-envelope"></i> <a href="mailto:hayaatkhan912@gmail.com">hayaatkhan912@gmail.com</a></p>
+        <p><i class="fa-regular fa-message"></i> <a href="tel:+923115545579">+92 311 5545579</a> (0311-5545579)</p>
+        <p><i class="fa-brands fa-linkedin"></i> <a href="https://www.linkedin.com/in/hayatullah-khan-858767279" target="_blank">linkedin.com/in/hayatullah-khan-858767279</a></p>
+        <div class="contact-social">
+          <a href="https://www.linkedin.com/in/hayatullah-khan-858767279" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#"><i class="fa-brands fa-github"></i></a>
+          <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+      </div>
+      <div class="contact-form">
+        <form id="contactForm" method="POST" action="https://formsubmit.co/hayaatkhan912@gmail.com">
+          <!-- honeypot and config -->
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="box">
+          <input type="hidden" name="_subject" value="New message from portfolio">
+          <input type="text" name="_honey" style="display:none">
+          <div class="input-group"><input type="text" name="name" placeholder="your name" required></div>
+          <div class="input-group"><input type="email" name="email" placeholder="email address" required></div>
+          <div class="input-group"><textarea name="message" rows="4" placeholder="message about WordPress, Flutter or collaboration..." required></textarea></div>
+          <button type="submit" class="submit-btn"><i class="fa-regular fa-paper-plane"></i> send message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2025 Hayatullah Khan — WordPress, Elementor & FlutterFlow Expert. All rights reserved.</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 900, once: false, mirror: true, offset: 50 });
+    // optional: add success message on return (if redirected)
+    (function() {
+      if(window.location.hash === '#success') {
+        alert('Message sent successfully! Thank you.');
+      }
+    })();
+  </script>
+</body>
+</html>
